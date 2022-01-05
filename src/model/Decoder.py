@@ -5,21 +5,27 @@ from src.model.SublayerConnection import SublayerConnection
 from src.model.tools import clones
 
 
-
 class Decoder(nn.Module):
     """
     Generic N layer decoder with masking.
     """
+
     def __init__(self, layer, N):
         super(Decoder, self).__init__()
         self.layers = clones(layer, N)
         self.norm = LayerNorm(layer.size)
+
+    def forward(self, x, memory, src_mask, tgt_mask):
+        for layer in self.layers:
+            x = layer(x, memory, src_mask, tgt_mask)
+        return self.norm(x)
 
 
 class DecoderLayer(nn.Module):
     """
     Decoder is made of self-attention, source-attention, and feed forward layer
     """
+
     def __init__(self, size, self_attn, src_attn, feed_forward, dropout):
         super(DecoderLayer, self).__init__()
         self.size = size

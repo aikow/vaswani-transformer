@@ -5,6 +5,7 @@ class EncoderDecoder(nn.Module):
     """
     A standard Encoder-Decoder architecture.
     """
+
     def __init__(self, encoder, decoder, src_embed, tgt_embed, generator):
         super(EncoderDecoder, self).__init__()
         self.encoder = encoder
